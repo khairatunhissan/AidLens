@@ -81,6 +81,12 @@ def current_input_data():
     }
 
 
+def hide_rules_section(prompt: str) -> str:
+    if not prompt:
+        return prompt
+    return prompt.split("\nRules:")[0].rstrip()
+
+
 def run_pipeline():
     data = current_input_data()
 
@@ -231,7 +237,7 @@ else:
     )
 
     st.markdown("**Prompt used for the explanation module**")
-    st.code(st.session_state["llm_prompt"])
+    st.code(hide_rules_section(st.session_state["llm_prompt"]))
 
     st.markdown("**Generated explanation output**")
     st.write(st.session_state["ai_explanation"])
@@ -252,10 +258,10 @@ else:
     st.json(st.session_state["numeric_policy_with_sensitive"])
 
     st.markdown("**Prompt used for numeric policy without sensitive features**")
-    st.code(st.session_state["numeric_policy_prompt_without_sensitive"])
+    st.code(hide_rules_section(st.session_state["numeric_policy_prompt_without_sensitive"]))
 
     st.markdown("**Prompt used for numeric policy with sensitive features**")
-    st.code(st.session_state["numeric_policy_prompt_with_sensitive"])
+    st.code(hide_rules_section(st.session_state["numeric_policy_prompt_with_sensitive"]))
 
     st.markdown("**Raw model output (numeric policy without sensitive features)**")
     st.code(st.session_state["raw_numeric_policy_output_without_sensitive"])
@@ -267,7 +273,7 @@ else:
     st.code(st.session_state["raw_llm_output"])
 
     st.markdown("**Prompt used for recommendation wording / decision support**")
-    st.code(st.session_state["decision_support_prompt"])
+    st.code(hide_rules_section(st.session_state["decision_support_prompt"]))
 
     st.markdown("**Generated enrollment wording**")
     st.write(st.session_state["enrollment_label"])
