@@ -1,14 +1,24 @@
 import os
 import json
 from typing import Dict, List, Any
+import streamlit as st
 from openai import OpenAI
 
 
 def _get_client() -> OpenAI:
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = None
+
+    try:
+        api_key = st.secrets.get("GROQ_API_KEY")
+    except Exception:
+        api_key = None
+
+    if not api_key:
+        api_key = os.environ.get("GROQ_API_KEY")
+
     if not api_key:
         raise RuntimeError(
-            "GROQ_API_KEY is not set. In your terminal run: export GROQ_API_KEY='your-key-here'"
+            "GROQ_API_KEY is not set. Add it in Streamlit Cloud Secrets or set it locally as an environment variable."
         )
 
     return OpenAI(
